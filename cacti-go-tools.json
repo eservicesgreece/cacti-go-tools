@@ -1,0 +1,11 @@
+{
+    "appname": "cacti-go-tools",
+    "nginx": {
+        "uri": "http://127.0.0.1",
+        "path": "nginx_status"
+    },
+    "phpfpm": {
+        "uri": "http://127.0.0.1",
+        "path": "phpfpm_status"
+    }
+}
