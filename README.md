@@ -2,28 +2,50 @@ cacti-go-tools
 ==============
 Tools for statistic acquisition from services for cacti
 
+You can find information on setup in the wiki
+* [NGINX](https://github.com/eservicesgreece/cacti-go-tools/wiki)
 
-Install
--------
-
-Configuration
--------------
-All configuration is made in cacti-go-tools.json. The file needs to be copied in /etc/cacti-go-tools/ in order for the tool to function properly from any path.
-
-SNMP Configuration
-------------------
-In your snmpd.conf you will need to add the following:
+## Usage
 ```bash
-extend nginx /root/cacti-go-tools engine nginx
+usage: cacti-go-tools.exe [<flags>] <command> [<args> ...]
+
+Flags:
+  -h, --help     Show context-sensitive help (also try --help-long and
+                 --help-man).
+      --version  Show application version.
+
+Commands:
+  help [<command>...]
+    Show help.
+
+  url <Status URL>
+    Acquisition URL
+
+  config
+    Show Configuration
+
+  engine <engine type>
+    Acquisition Engine
 ```
 
-nginx
------
-You will need to enable the /status end point in nginx, you can include the configuration in conf/nginx/nginx_status.conf
+## Configuration
+The tool retrieves its configuration from the cacti-go-tools.json file, in normal operation you will not need to pass any other parameters other than which engine you want it to use.
+
+### Testing the Setup
+You can always test if your setup is working by invocking the tool directly from the command line
 ```bash
-Server {
-...
-    include /etc/nginx/nginx_status.conf
-...
-}
+cacti-go-tools engine nginx
 ```
+This should show something similar to this:
+```
+1
+181
+181
+172
+0
+1
+0
+```
+In case there is an error the tool will pass that error directly to the result, for http errors you will receive http/{http status code}
+Error Example:
+`http/403 Forbidden`

@@ -51,10 +51,15 @@ func main() {
 		fmt.Println("Path :", viper.GetString("nginx.path"))
 
 	case "engine":
-		if *enginetype == "nginx" {
+		switch *enginetype {
+		case "nginx":
 			fmt.Printf(nginxStatus(fetchURL(viper.GetString("nginx.uri") + `/` + viper.GetString("nginx.path"))))
+			break
+		case "phpfpm":
+			break
+		default:
+			fmt.Printf("Mistakes were made")
 		}
-
 	default:
 		fmt.Printf("foo")
 	}
