@@ -20,7 +20,7 @@ var (
 	config = kingpin.Command("config", "Show Configuration")
 
 	engine     = kingpin.Command("engine", "Acquisition Engine")
-	enginetype = engine.Arg("engine type", "Supported Engines: nginx, php-fpm").Required().HintOptions("nginx php-fpm").String()
+	enginetype = engine.Arg("engine type", "Supported Engines: nginx, php-fpm").Required().HintOptions("nginx php-fpm pagespeed").String()
 )
 
 func main() {
@@ -52,16 +52,20 @@ func main() {
 		fmt.Println("phpfpm")
 		fmt.Println("URI :", viper.GetString("phpfpm.uri"))
 		fmt.Println("Path :", viper.GetString("phpfpm.path"))
+		break
 	case "engine":
 		switch *enginetype {
 		case "nginx":
-			fmt.Printf(nginxStatus(fetchURL(viper.GetString("nginx.uri") + `/` + viper.GetString("nginx.path"))))
+			fmt.Printf(nginxStatus(fetchURL(makeURL(viper.GetString("phpfpm.uri"), viper.GetString("phpfpm.path")))))
 			break
 		case "phpfpm":
-			fmt.Printf(phpfpmStatus(fetchURL(viper.GetString("phpfpm.uri") + `/` + viper.GetString("phpfpm.path"))))
+			fmt.Printf(phpfpmStatus(fetchURL(makeURL(viper.GetString("phpfpm.uri"), viper.GetString("phpfpm.path")))))
+			break
+		case "pagespeed":
 			break
 		default:
 			fmt.Printf("Mistakes were made")
+			break
 		}
 	default:
 		fmt.Printf("foo")
