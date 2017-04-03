@@ -161,7 +161,7 @@
 			<t_title></t_title>
 			<title>|host_description| - NGINX Status</title>
 			<t_vertical_label></t_vertical_label>
-			<vertical_label>Ammount</vertical_label>
+			<vertical_label>Amount</vertical_label>
 			<t_image_format_id></t_image_format_id>
 			<image_format_id>1</image_format_id>
 			<t_height></t_height>
@@ -305,7 +305,7 @@
 			<t_title></t_title>
 			<title>|host_description| - NGINX Handled Connections</title>
 			<t_vertical_label></t_vertical_label>
-			<vertical_label>Number</vertical_label>
+			<vertical_label>Amount</vertical_label>
 			<t_image_format_id></t_image_format_id>
 			<image_format_id>1</image_format_id>
 			<t_height></t_height>
@@ -827,7 +827,7 @@
 			<t_title></t_title>
 			<title>|host_description| - NGINX Unhandled Connections</title>
 			<t_vertical_label></t_vertical_label>
-			<vertical_label>Ammount</vertical_label>
+			<vertical_label>Amount</vertical_label>
 			<t_image_format_id></t_image_format_id>
 			<image_format_id>1</image_format_id>
 			<t_height></t_height>
