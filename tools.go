@@ -1,5 +1,7 @@
 package main
 
+import "github.com/spf13/viper"
+
 func makeURL(uri, path string) string {
 	rURL := ""
 
@@ -17,4 +19,11 @@ func makeURL(uri, path string) string {
 		}
 	}
 	return rURL
+}
+
+func onemptyreturnzero(tag []byte, engine string) []byte {
+	if (tag == nil) && (viper.GetBool(engine + ".onemptyreturnzero")) {
+		return []byte("0")
+	}
+	return tag
 }

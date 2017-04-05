@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"os"
+
+	"golang.org/x/crypto/ssh/terminal"
 
 	"github.com/spf13/viper"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -10,6 +13,8 @@ import (
 var version string
 var buildstamp string
 var hash string
+
+var interactive bool
 
 //Set Commands, Flags and Args
 var (
@@ -25,6 +30,12 @@ var (
 )
 
 func main() {
+	// check if we are run by a user
+	if terminal.IsTerminal(int(os.Stdout.Fd())) {
+		interactive = true
+	} else {
+		interactive = false
+	}
 
 	viper.SetConfigName("cacti-go-tools") // name of config file (without extension)
 	viper.SetConfigType("json")           // Set type to json
@@ -36,7 +47,8 @@ func main() {
 	//Fetch Configuration
 	err := viper.ReadInConfig() // Find and read the config file
 	if err != nil {             // Handle errors reading the config file
-		panic(fmt.Errorf("Fatal error config file: %s", err))
+		fmt.Println("Config file not found, please create it under /etc/cacti-go-tools/cacti-go-tools.json")
+		os.Exit(1)
 	}
 
 	//Setup flag parsing

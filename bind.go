@@ -27,6 +27,7 @@ func bindStatus(statisticsfile, qType string) string {
 
 				removeTag := regexp.MustCompile(`\d+ `)
 				cleanTag := removeTag.Find(tag)
+				cleanTag = onemptyreturnzero(cleanTag, "bind")
 
 				statusValues = append(statusValues, string(cleanTag))
 			}
@@ -38,6 +39,7 @@ func bindStatus(statisticsfile, qType string) string {
 
 				removeTag := regexp.MustCompile(`\d+ `)
 				cleanTag := removeTag.Find(tag)
+				cleanTag = onemptyreturnzero(cleanTag, "bind")
 
 				statusValues = append(statusValues, string(cleanTag))
 			}
@@ -49,6 +51,7 @@ func bindStatus(statisticsfile, qType string) string {
 
 				removeTag := regexp.MustCompile(`\d+ `)
 				cleanTag := removeTag.Find(tag)
+				cleanTag = onemptyreturnzero(cleanTag, "bind")
 
 				statusValues = append(statusValues, string(cleanTag))
 			}
