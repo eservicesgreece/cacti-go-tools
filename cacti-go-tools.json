@@ -1,5 +1,6 @@
 {
     "appname": "cacti-go-tools",
+    "general": {},
     "snmp": {
         "timeout": "15",
         "community": "public",
@@ -10,10 +11,17 @@
     },
     "nginx": {
         "uri": "http://127.0.0.1",
-        "path": "nginx_status"
+        "path": "nginx_status",
+        "onemptyreturnzero": false
     },
     "phpfpm": {
         "uri": "http://127.0.0.1",
-        "path": "phpfpm_status"
+        "path": "phpfpm_status",
+        "onemptyreturnzero": false
+    },
+    "bind": {
+        "uri": "/var/named/data",
+        "filename": "named_stats.txt",
+        "onemptyreturnzero": false
     }
 }

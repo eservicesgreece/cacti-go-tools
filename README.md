@@ -3,7 +3,8 @@ cacti-go-tools
 Tools for statistic acquisition from services for cacti
 
 You can find information on setup in the wiki
-* [NGINX](https://github.com/eservicesgreece/cacti-go-tools/wiki)
+* [NGINX](https://github.com/eservicesgreece/cacti-go-tools/wiki/NGINX)
+* [php-fpm](https://github.com/eservicesgreece/cacti-go-tools/wiki/php-fpm)
 
 ## Usage
 ```bash

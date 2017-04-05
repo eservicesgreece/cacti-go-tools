@@ -19,8 +19,9 @@ var (
 
 	config = kingpin.Command("config", "Show Configuration")
 
-	engine     = kingpin.Command("engine", "Acquisition Engine")
-	enginetype = engine.Arg("engine type", "Supported Engines: nginx, php-fpm").Required().HintOptions("nginx php-fpm pagespeed").String()
+	engine        = kingpin.Command("engine", "Acquisition Engine")
+	enginetype    = engine.Arg("enginetype", "Supported Engines: nginx, php-fpm").Required().HintOptions("nginx php-fpm pagespeed bind").String()
+	engineoptions = engine.Arg("engine options", "engine options").String()
 )
 
 func main() {
@@ -63,11 +64,27 @@ func main() {
 			break
 		case "pagespeed":
 			break
+		case "bind":
+			switch *engineoptions {
+			case "requests":
+				fmt.Printf(bindStatus(makeURL(viper.GetString("bind.uri"), viper.GetString("bind.filename")), "requests"))
+				break
+			case "queries":
+				fmt.Printf(bindStatus(makeURL(viper.GetString("bind.uri"), viper.GetString("bind.filename")), "queries"))
+				break
+			case "nsstats":
+				fmt.Printf(bindStatus(makeURL(viper.GetString("bind.uri"), viper.GetString("bind.filename")), "nsstats"))
+				break
+			default:
+				fmt.Printf(bindStatus(makeURL(viper.GetString("bind.uri"), viper.GetString("bind.filename")), "queries"))
+				break
+			}
 		default:
-			fmt.Printf("Mistakes were made")
+			fmt.Println("Engine " + *enginetype + " does not exist.")
 			break
 		}
 	default:
-		fmt.Printf("foo")
+		fmt.Printf("Mistakes were made.")
+		break
 	}
 }
