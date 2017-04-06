@@ -1,6 +1,12 @@
 {
     "appname": "cacti-go-tools",
     "general": {},
+    "logging": {
+        "enabled": false,
+        "level": "information",
+        "uri": "/var/log",
+        "filename": "cacti-go-tools.log"
+    },
     "snmp": {
         "timeout": "15",
         "community": "public",
