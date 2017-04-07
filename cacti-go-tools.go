@@ -4,39 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"golang.org/x/crypto/ssh/terminal"
-
 	"github.com/spf13/viper"
+	"golang.org/x/crypto/ssh/terminal"
 	"gopkg.in/alecthomas/kingpin.v2"
-)
-
-var version string
-var buildstamp string
-var hash string
-
-var interactive bool
-
-//Set Commands, Flags and Args
-var (
-	app   = kingpin.New("cacti-go-tools", "Data Collection Engine")
-	curl  = kingpin.Command("url", "Acquisition URL")
-	curla = curl.Arg("Status URL", "Status URL").Required().URL()
-
-	config = kingpin.Command("config", "Show Configuration")
-
-	engine        = kingpin.Command("engine", "Acquisition Engine")
-	enginetype    = engine.Arg("enginetype", "Supported Engines: nginx, php-fpm").Required().HintOptions("nginx php-fpm pagespeed bind").String()
-	engineoptions = engine.Arg("engine options", "engine options").String()
-
-	test          = kingpin.Command("test", "Testing tools")
-	nginxtest     = test.Command("nginx", "Test SNMP Acquisition")
-	nginxtesthost = nginxtest.Arg("host", "Host to test").Required().String()
-	testuser      = test.Command("test", "test")
-
-	install        = kingpin.Command("install", "Install cacti-go-tools")
-	installconf    = install.Arg("config", "Installs default configuration").String()
-	installconfurl = install.Flag("configurl", "Configuration file URL").String()
-	installbin     = install.Arg("binary", "Copies the cacti-go-tools binary in /usr/local/bin").String()
 )
 
 func main() {
@@ -55,14 +25,14 @@ func main() {
 
 	viper.SetConfigName("cacti-go-tools") // name of config file (without extension)
 	viper.SetConfigType("json")           // Set type to json
-	//Find Configuration File
-	viper.AddConfigPath("/etc/cacti-go-tools/")  // path to look for the config file in
-	viper.AddConfigPath("$HOME/.cacti-go-tools") // call multiple times to add many search paths
-	viper.AddConfigPath(".")                     // optionally look for config in the working directory
+	//Set Configuration File paths
+	viper.AddConfigPath("/etc/cacti-go-tools/")
+	viper.AddConfigPath("$HOME/.cacti-go-tools")
+	viper.AddConfigPath(".")
 
 	//Fetch Configuration
 	err := viper.ReadInConfig() // Find and read the config file
-	if err != nil {             // Handle errors reading the config file
+	if err != nil {
 		if *installconf != "" {
 			downloadConfig("/etc/cacti-go-tools/", *installconfurl)
 			os.Exit(0)
