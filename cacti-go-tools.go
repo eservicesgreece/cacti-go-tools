@@ -29,8 +29,9 @@ var (
 	engineoptions = engine.Arg("engine options", "engine options").String()
 
 	test          = kingpin.Command("test", "Testing tools")
-	nginxsnmp     = test.Command("nginxsnmp", "Test SNMP Acquisition")
-	nginxsnmphost = nginxsnmp.Arg("host", "Host to test").Required().String()
+	nginxtest     = test.Command("nginx", "Test SNMP Acquisition")
+	nginxtesthost = nginxtest.Arg("host", "Host to test").Required().String()
+	testuser      = test.Command("test", "test")
 
 	install        = kingpin.Command("install", "Install cacti-go-tools")
 	installconf    = install.Arg("config", "Installs default configuration").String()
@@ -43,7 +44,7 @@ func main() {
 	//Setup flag parsing
 	kingpin.CommandLine.HelpFlag.Short('h')
 	kingpin.Version(version)
-	kingpin.Parse()
+	appFlags := kingpin.Parse()
 
 	// check if we are executed by a user
 	if terminal.IsTerminal(int(os.Stdout.Fd())) {
@@ -63,24 +64,27 @@ func main() {
 	err := viper.ReadInConfig() // Find and read the config file
 	if err != nil {             // Handle errors reading the config file
 		if *installconf != "" {
-			fmt.Println("Downloading Config")
-			fetchConfig("https://raw.githubusercontent.com/eservicesgreece/cacti-go-tools/master/cacti-go-tools.json")
+			downloadConfig("/etc/cacti-go-tools/", *installconfurl)
 			os.Exit(0)
 		} else {
-			fmt.Println("Config file not found, please create it under /etc/cacti-go-tools/cacti-go-tools.json")
+			fmt.Println("Config file not found, please create it under /etc/cacti-go-tools/cacti-go-tools.json or run cacti-go-tools install config")
 			os.Exit(1)
 		}
 	}
 
 	//Flag Actions
-	switch kingpin.Parse() {
+	switch appFlags {
 	case "config":
-		fmt.Println("nginx")
-		fmt.Println("URI :", viper.GetString("nginx.uri"))
-		fmt.Println("Path :", viper.GetString("nginx.path"))
-		fmt.Println("phpfpm")
-		fmt.Println("URI :", viper.GetString("phpfpm.uri"))
-		fmt.Println("Path :", viper.GetString("phpfpm.path"))
+		for setting, value := range viper.AllSettings() {
+			if checkIfIsMap(value) {
+				fmt.Println(setting)
+				for option, oValue := range value.(map[string]interface{}) {
+					fmt.Println(option, "=", oValue)
+				}
+			} else {
+				fmt.Println("Setting:", setting, "=", value)
+			}
+		}
 		break
 	case "engine":
 		switch *enginetype {
@@ -95,37 +99,35 @@ func main() {
 		case "bind":
 			switch *engineoptions {
 			case "requests":
-				fmt.Printf(bindStatus(makeURL(viper.GetString("bind.uri"), viper.GetString("bind.filename")), "requests"))
+				fmt.Printf(bindStatus(combinePath(viper.GetString("bind.uri"), viper.GetString("bind.filename")), "requests"))
 				break
 			case "queries":
-				fmt.Printf(bindStatus(makeURL(viper.GetString("bind.uri"), viper.GetString("bind.filename")), "queries"))
+				fmt.Printf(bindStatus(combinePath(viper.GetString("bind.uri"), viper.GetString("bind.filename")), "queries"))
 				break
 			case "nsstats":
-				fmt.Printf(bindStatus(makeURL(viper.GetString("bind.uri"), viper.GetString("bind.filename")), "nsstats"))
+				fmt.Printf(bindStatus(combinePath(viper.GetString("bind.uri"), viper.GetString("bind.filename")), "nsstats"))
 				break
 			default:
-				fmt.Printf(bindStatus(makeURL(viper.GetString("bind.uri"), viper.GetString("bind.filename")), "queries"))
+				fmt.Printf(bindStatus(combinePath(viper.GetString("bind.uri"), viper.GetString("bind.filename")), "queries"))
 				break
 			}
 		default:
 			fmt.Println("Engine " + *enginetype + " does not exist.")
 			break
 		}
-
-	case "test nginxsnmp":
-		fmt.Printf("nginx snmp tests " + *nginxsnmphost)
+	case "test test":
+		fmt.Println(combinePath(`\test\`, `\filename`))
+		fmt.Printf(makeURL(viper.GetString("phpfpm.uri"), viper.GetString("phpfpm.path")))
+		break
+	case "test nginxtest":
+		fmt.Printf("nginx snmp tests " + *nginxtesthost)
 		break
 	case "install":
 		if *installconf != "" {
-			fmt.Println("Downloading Default Config")
-			if *installconfurl != "" {
-				fetchConfig(*installconfurl)
-			} else {
-				fetchConfig("https://raw.githubusercontent.com/eservicesgreece/cacti-go-tools/master/cacti-go-tools.json")
-			}
+			downloadConfig("/etc/cacti-go-tools/", *installconfurl)
 		}
 		if *installbin != "" {
-			copyFile("cacti-go-tools.json", "/etc/cacti-go-tools/", "cacti-go-tools.json")
+			copyFile("cacti-go-tools", "/usr/bin/", "cacti-go-tools")
 		}
 	default:
 		fmt.Printf("Mistakes were made.")

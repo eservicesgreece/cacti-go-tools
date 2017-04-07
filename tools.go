@@ -1,24 +1,28 @@
 package main
 
-import "github.com/spf13/viper"
+import (
+	"net/url"
+	"path"
+	"path/filepath"
+	"reflect"
 
-func makeURL(uri, path string) string {
-	rURL := ""
+	"fmt"
 
-	if path[len(path)-1:] == `/` {
-		path = path[:len(path)-1]
+	"github.com/spf13/viper"
+)
+
+func combinePath(userPath, file string) string {
+	return filepath.Join(userPath, file)
+}
+
+func makeURL(uri, filePath string) string {
+	url, err := url.Parse(uri)
+	if err != nil {
+		fmt.Printf("Incorrect URI: %v", uri)
 	}
 
-	if (uri[len(uri)-1:] == `/`) && (path[:1] == `/`) {
-		rURL = uri[:len(uri)-1] + path
-	} else {
-		if (uri[len(uri)-1:] == `/`) || (path[:1] == `/`) {
-			rURL = uri + path
-		} else {
-			rURL = uri + `/` + path
-		}
-	}
-	return rURL
+	url.Path = path.Join(url.Path, filePath)
+	return url.String()
 }
 
 func onemptyreturnzero(tag []byte, engine string) []byte {
@@ -26,4 +30,11 @@ func onemptyreturnzero(tag []byte, engine string) []byte {
 		return []byte("0")
 	}
 	return tag
+}
+
+func checkIfIsMap(typeFC interface{}) bool {
+	if reflect.ValueOf(typeFC).Kind() == reflect.Map {
+		return true
+	}
+	return false
 }

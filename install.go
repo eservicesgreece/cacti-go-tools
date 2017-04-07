@@ -5,12 +5,33 @@ import (
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/mitchellh/go-homedir"
 )
+
+func getUsersHome() string {
+	homePath, err := homedir.Dir()
+	if err != nil {
+
+	}
+	return (homePath)
+}
+
+func downloadConfig(location, url string) {
+	fmt.Println("Downloading Default Config")
+	if url != "" {
+		fetchConfig(url)
+		copyFile("cacti-go-tools.json", location, "cacti-go-tools.json")
+	} else {
+		fetchConfig("https://raw.githubusercontent.com/eservicesgreece/cacti-go-tools/master/cacti-go-tools.json")
+		copyFile("cacti-go-tools.json", location, "cacti-go-tools.json")
+	}
+}
 
 func fetchConfig(confURL string) {
 	var cactiConf = "cacti-go-tools.json"
 	//create our file
-	fileOut, err := os.Create(cactiConf)
+	fileOut, err := os.Create(getUsersHome() + string(os.PathSeparator) + cactiConf)
 	if err != nil {
 		fmt.Printf("File Error: %v", err)
 	}
