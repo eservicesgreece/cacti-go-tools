@@ -1,12 +1,17 @@
 package main
 
-import kingpin "gopkg.in/alecthomas/kingpin.v2"
+import (
+	"os"
+
+	"golang.org/x/crypto/ssh/terminal"
+	kingpin "gopkg.in/alecthomas/kingpin.v2"
+)
 
 var version string
 var buildstamp string
 var hash string
 
-var interactive bool
+var interactive = terminal.IsTerminal(int(os.Stdout.Fd())) // check if we are executed by a user
 
 //Set Commands, Flags and Args
 var (

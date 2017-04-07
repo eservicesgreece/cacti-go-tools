@@ -2,59 +2,23 @@ package main
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/spf13/viper"
-	"golang.org/x/crypto/ssh/terminal"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 func main() {
 
-	//Setup flag parsing
-	kingpin.CommandLine.HelpFlag.Short('h')
-	kingpin.Version(version)
-	appFlags := kingpin.Parse()
+	kingpin.CommandLine.HelpFlag.Short('h') //enable help short
+	kingpin.Version(version)                //set our version in help
+	appFlags := kingpin.Parse()             //Setup flag parsing
 
-	// check if we are executed by a user
-	if terminal.IsTerminal(int(os.Stdout.Fd())) {
-		interactive = true
-	} else {
-		interactive = false
-	}
-
-	viper.SetConfigName("cacti-go-tools") // name of config file (without extension)
-	viper.SetConfigType("json")           // Set type to json
-	//Set Configuration File paths
-	viper.AddConfigPath("/etc/cacti-go-tools/")
-	viper.AddConfigPath("$HOME/.cacti-go-tools")
-	viper.AddConfigPath(".")
-
-	//Fetch Configuration
-	err := viper.ReadInConfig() // Find and read the config file
-	if err != nil {
-		if *installconf != "" {
-			downloadConfig("/etc/cacti-go-tools/", *installconfurl)
-			os.Exit(0)
-		} else {
-			fmt.Println("Config file not found, please create it under /etc/cacti-go-tools/cacti-go-tools.json or run cacti-go-tools install config")
-			os.Exit(1)
-		}
-	}
+	setupConfig() //Setup config file details, parse and fetch if needed
 
 	//Flag Actions
 	switch appFlags {
 	case "config":
-		for setting, value := range viper.AllSettings() {
-			if checkIfIsMap(value) {
-				fmt.Println(setting)
-				for option, oValue := range value.(map[string]interface{}) {
-					fmt.Println(option, "=", oValue)
-				}
-			} else {
-				fmt.Println("Setting:", setting, "=", value)
-			}
-		}
+		dumpConfig()
 		break
 	case "engine":
 		switch *enginetype {
