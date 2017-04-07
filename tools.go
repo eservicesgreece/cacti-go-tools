@@ -25,9 +25,9 @@ func makeURL(uri, filePath string) string {
 	return url.String()
 }
 
-func onemptyreturnzero(tag []byte, engine string) []byte {
-	if (tag == nil) && (viper.GetBool(engine + ".onemptyreturnzero")) {
-		return []byte("0")
+func onemptyreturnzero(tag string, engine string) string {
+	if (tag == "") && (viper.GetBool(engine + ".onemptyreturnzero")) {
+		return "0"
 	}
 	return tag
 }

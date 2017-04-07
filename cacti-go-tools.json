@@ -3,7 +3,7 @@
     "general": {},
     "logging": {
         "enabled": false,
-        "level": "information",
+        "level": "info",
         "uri": "/var/log",
         "filename": "cacti-go-tools.log"
     },

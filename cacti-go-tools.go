@@ -2,18 +2,29 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
 
+	"github.com/Sirupsen/logrus"
 	"github.com/spf13/viper"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 func main() {
-
 	kingpin.CommandLine.HelpFlag.Short('h') //enable help short
 	kingpin.Version(version)                //set our version in help
-	appFlags := kingpin.Parse()             //Setup flag parsing
 
 	setupConfig() //Setup config file details, parse and fetch if needed
+	logLvl, _ := logrus.ParseLevel(viper.GetString("logging.level"))
+	logfile, _ := os.OpenFile(combinePath(viper.GetString("logging.uri"), viper.GetString("logging.path")), os.O_WRONLY|os.O_CREATE, 0755)
+
+	if viper.GetBool("logging.enabled") == false {
+		log.Out = ioutil.Discard
+	}
+
+	logrus.SetLevel(logLvl)
+	logrus.SetFormatter(new(logrus.TextFormatter))
+	logrus.SetOutput(logfile)
 
 	//Flag Actions
 	switch appFlags {
