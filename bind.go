@@ -9,17 +9,23 @@ import (
 
 func parseStatistics(stats []string, statsFile string) []string {
 	var statusValues []string
+	var cleanTag string
+
 	bindstats, err := ioutil.ReadFile(statsFile)
 	if err != nil {
 		fmt.Println("File " + statsFile + " Not Found")
 	} else {
 		for _, element := range stats {
-			_ = element
 			idTag := regexp.MustCompile(`(?m)(\d+\s` + element + `$)`)
 			tag := idTag.FindAllString(string(bindstats), -1)
 
-			removeTag := regexp.MustCompile(`\d+ `)
-			cleanTag := removeTag.FindString(tag[len(tag)-1])
+			if len(tag) == 0 {
+				cleanTag = ""
+			} else {
+				removeTag := regexp.MustCompile(`\d+ `)
+				cleanTag = removeTag.FindString(tag[len(tag)-1])
+			}
+
 			cleanTag = onemptyreturnzero(cleanTag, "bind")
 
 			statusValues = append(statusValues, string(cleanTag))
