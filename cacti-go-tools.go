@@ -5,17 +5,22 @@ import (
 	"io/ioutil"
 	"os"
 
+	kingpin "gopkg.in/alecthomas/kingpin.v2"
+
 	"github.com/Sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
 func main() {
-	setupConfig() //Setup config file details, parse and fetch if needed
+	fullversion := "cacti-go-tools (c) 2017 eServices Greece | https://eservices-greece.com\nVersion: " + version + " | Build: " + buildstamp + "\nBuild on: " + hash + "\nGITHUB: https://github.com/eservicesgreece/cacti-go-tools"
+	kingpin.Version(fullversion) //set our version
+	kingpin.CommandLine.HelpFlag.Short('h')
+	kingpin.CommandLine.VersionFlag.Short('v')
+
+	var appFlags = kingpin.Parse() //Setup flag parsing
+	setupConfig()                  //Setup config file details, parse and fetch if needed
 
 	app.HelpFlag.Short('h') //enable help short
-	// kingpin.CommandLine.HelpFlag.Short('h')
-	// kingpin.CommandLine.VersionFlag.Short('v')
-	// kingpin.Version(version) //set our version in help
 
 	logLvl, _ := logrus.ParseLevel(viper.GetString("logging.level"))
 	logfile, _ := os.OpenFile(combinePath(viper.GetString("logging.uri"), viper.GetString("logging.path")), os.O_WRONLY|os.O_CREATE, 0755)

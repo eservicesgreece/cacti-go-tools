@@ -7,6 +7,22 @@ You can find information on setup in the wiki
 * [php-fpm](https://github.com/eservicesgreece/cacti-go-tools/wiki/php-fpm)
 * [bind](https://github.com/eservicesgreece/cacti-go-tools/wiki/bind)
 
+## OS & Arch Support
+* * Linux - amd64, 386, arm, arm64, mips, mipsle, ppc64, ppc64le, s390x
+* * Windows - 386, amd64
+* * OS X - 386, amd64
+* * Dragonfly - amd64
+* * FreeBSD - 386, amd64, arm
+* * NetBSD - 386, amd64, arm
+* * openBSD - 386, amd64
+* * Solaris - amd64
+
+## Build
+In most cases this is enough to build:
+```
+go get github.com/eservicesgreece/cacti-go-tools
+```
+
 ## Usage
 ```bash
 usage: cacti-go-tools.exe [<flags>] <command> [<args> ...]
@@ -26,9 +42,6 @@ Commands:
 
   test nginx <host>
     Test SNMP Acquisition
-
-  test test
-    test
 
   install [<flags>] [<config>] [<binary>]
     Install cacti-go-tools

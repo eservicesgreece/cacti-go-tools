@@ -1,10 +1,7 @@
 package main
 
 import (
-	"os"
-
 	"github.com/Sirupsen/logrus"
-	"golang.org/x/crypto/ssh/terminal"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -13,7 +10,6 @@ var buildstamp string
 var hash string
 
 var log = logrus.New()
-var interactive = terminal.IsTerminal(int(os.Stdout.Fd())) // check if we are executed by a user
 
 var ( //Set Commands, Flags and Args
 	app = kingpin.New("cacti-go-tools", "Data Collection Engine")
@@ -28,12 +24,10 @@ var ( //Set Commands, Flags and Args
 	test          = kingpin.Command("test", "Testing tools")
 	nginxtest     = test.Command("nginx", "Test SNMP Acquisition")
 	nginxtesthost = nginxtest.Arg("host", "Host to test").Required().String()
-	testuser      = test.Command("test", "test")
+	//	testuser      = test.Command("test", "test")
 
 	install        = kingpin.Command("install", "Install cacti-go-tools")
 	installconf    = install.Arg("config", "Installs default configuration").String()
 	installconfurl = install.Flag("configurl", "Configuration file URL").String()
 	installbin     = install.Arg("binary", "Copies the cacti-go-tools binary in /usr/bin/").String()
 )
-
-var appFlags = kingpin.Parse() //Setup flag parsing
