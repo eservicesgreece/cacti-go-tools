@@ -23,6 +23,7 @@ In most cases this is enough to build:
 ```
 go get github.com/eservicesgreece/cacti-go-tools
 ```
+If you would like to build all supported platforms you can use the build.bat and build.sh from here [build.bat](https://gist.github.com/gpant/2078fc6d1c77dd14ab30d83e538bddbc), it expects a properly setup go environment and upx to be in the path.
 
 ## Usage
 ```bash

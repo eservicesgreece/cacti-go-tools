@@ -8,7 +8,7 @@
 		<name>ntp</name>
 		<graph>
 			<t_title></t_title>
-			<title>ntp</title>
+			<title>|host_description| - ntp</title>
 			<t_vertical_label></t_vertical_label>
 			<vertical_label>ntp</vertical_label>
 			<t_image_format_id></t_image_format_id>

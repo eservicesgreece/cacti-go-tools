@@ -8,7 +8,7 @@
 		<name>bind Queries</name>
 		<graph>
 			<t_title></t_title>
-			<title>bind Queries</title>
+			<title>|host_description| - bind Queries</title>
 			<t_vertical_label></t_vertical_label>
 			<vertical_label>Queries</vertical_label>
 			<t_image_format_id></t_image_format_id>
@@ -602,7 +602,7 @@
 		<name>bind nsstats</name>
 		<graph>
 			<t_title></t_title>
-			<title>bind nsstats</title>
+			<title>|host_description| - bind nsstats</title>
 			<t_vertical_label></t_vertical_label>
 			<vertical_label>NS Statistics</vertical_label>
 			<t_image_format_id></t_image_format_id>
@@ -1071,7 +1071,7 @@
 		<name>bind Requests</name>
 		<graph>
 			<t_title></t_title>
-			<title>bind Requests</title>
+			<title>|host_description| - bind Requests</title>
 			<t_vertical_label></t_vertical_label>
 			<vertical_label>Requests</vertical_label>
 			<t_image_format_id></t_image_format_id>
