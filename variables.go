@@ -18,13 +18,13 @@ var ( //Set Commands, Flags and Args
 	config = kingpin.Command("config", "Show Configuration")
 
 	engine        = kingpin.Command("engine", "Acquisition Engine")
-	enginetype    = engine.Arg("enginetype", "Supported Engines: nginx, php-fpm").Required().HintOptions("nginx php-fpm pagespeed bind").String()
+	enginetype    = engine.Arg("enginetype", "Supported Engines: nginx, php-fpm, bind, ntp").Required().HintOptions("nginx php-fpm pagespeed bind ntp").String()
 	engineoptions = engine.Arg("engine options", "engine options").String()
 
 	test          = kingpin.Command("test", "Testing tools")
 	nginxtest     = test.Command("nginx", "Test SNMP Acquisition")
 	nginxtesthost = nginxtest.Arg("host", "Host to test").Required().String()
-	//	testuser      = test.Command("test", "test")
+	testtest      = test.Command("test", "test")
 
 	install        = kingpin.Command("install", "Install cacti-go-tools")
 	installconf    = install.Arg("config", "Installs default configuration").String()

@@ -29,5 +29,10 @@
         "uri": "/var/named/data",
         "filename": "named_stats.txt",
         "onemptyreturnzero": false
+    },
+    "ntp": {
+        "uri": "/var/log/ntpstats",
+        "filename": "loopstats",
+        "onemptyreturnzero": false
     }
 }

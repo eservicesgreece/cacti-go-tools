@@ -13,14 +13,12 @@ import (
 
 func main() {
 	fullversion := "cacti-go-tools (c) 2017 eServices Greece | https://eservices-greece.com\nVersion: " + version + " | Build: " + buildstamp + "\nBuild on: " + hash + "\nGITHUB: https://github.com/eservicesgreece/cacti-go-tools"
-	kingpin.Version(fullversion) //set our version
-	kingpin.CommandLine.HelpFlag.Short('h')
-	kingpin.CommandLine.VersionFlag.Short('v')
+	kingpin.Version(fullversion)               //set our version
+	kingpin.CommandLine.HelpFlag.Short('h')    //enable help short
+	kingpin.CommandLine.VersionFlag.Short('v') //enable version short
 
 	var appFlags = kingpin.Parse() //Setup flag parsing
 	setupConfig()                  //Setup config file details, parse and fetch if needed
-
-	app.HelpFlag.Short('h') //enable help short
 
 	logLvl, _ := logrus.ParseLevel(viper.GetString("logging.level"))
 	logfile, _ := os.OpenFile(combinePath(viper.GetString("logging.uri"), viper.GetString("logging.path")), os.O_WRONLY|os.O_CREATE, 0755)
@@ -66,13 +64,15 @@ func main() {
 				fmt.Printf(bindStatus(combinePath(viper.GetString("bind.uri"), viper.GetString("bind.filename")), "queries"))
 				break
 			}
+		case "ntp":
+			fmt.Printf(loopStats(combinePath(viper.GetString("ntp.uri"), viper.GetString("ntp.filename"))))
+			break
 		default:
 			fmt.Println("Engine " + *enginetype + " does not exist.")
 			break
 		}
 	case "test test":
-		fmt.Println(combinePath(`\test\`, `\filename`))
-		fmt.Printf(makeURL(viper.GetString("phpfpm.uri"), viper.GetString("phpfpm.path")))
+
 		break
 	case "test nginxtest":
 		fmt.Printf("nginx snmp tests " + *nginxtesthost)
