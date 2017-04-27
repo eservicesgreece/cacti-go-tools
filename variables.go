@@ -11,6 +11,8 @@ var hash string
 
 var log = logrus.New()
 
+var cactiConf = "cacti-go-tools.json"
+
 var ( //Set Commands, Flags and Args
 	app = kingpin.New("cacti-go-tools", "Data Collection Engine")
 	ver = app.Flag("ver", "Ver").Bool()
