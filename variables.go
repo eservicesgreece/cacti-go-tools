@@ -29,7 +29,6 @@ var ( //Set Commands, Flags and Args
 	testtest      = test.Command("test", "test")
 
 	install        = kingpin.Command("install", "Install cacti-go-tools")
-	installconf    = install.Arg("config", "Installs default configuration").String()
+	installtype    = install.Arg("config or binary", "Installs default configuration or binary").String()
 	installconfurl = install.Flag("configurl", "Configuration file URL").String()
-	installbin     = install.Arg("binary", "Copies the cacti-go-tools binary in /usr/bin/").String()
 )

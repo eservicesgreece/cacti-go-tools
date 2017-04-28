@@ -26,6 +26,11 @@ func downloadConfig(location, url string) {
 		fetchConfig("https://raw.githubusercontent.com/eservicesgreece/cacti-go-tools/master/cacti-go-tools.json")
 		copyFile(combinePath(getUsersHome(), cactiConf), location, cactiConf)
 	}
+
+	err := os.Remove(combinePath(getUsersHome(), cactiConf))
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 func fetchConfig(confURL string) {
@@ -33,58 +38,55 @@ func fetchConfig(confURL string) {
 	fmt.Println(combinePath(getUsersHome(), cactiConf))
 	fileOut, err := os.Create(combinePath(getUsersHome(), cactiConf))
 	if err != nil {
-		fmt.Println("File Creation Error: %v", err)
+		fmt.Printf("File Creation Error: %v\n", err)
 	}
 	defer fileOut.Close()
 
 	_, err = os.Stat(combinePath(getUsersHome(), cactiConf))
 	if err != nil {
-		fmt.Println("File Error: %v", err)
+		fmt.Printf("File Error: %v\n", err)
 	} else {
 		fileBody, err := http.Get(confURL)
 		if err != nil {
-			fmt.Println("Download Error: %v", err)
+			fmt.Printf("Download Error: %v\n", err)
 		} else {
 			io.Copy(fileOut, fileBody.Body)
 			fmt.Println("File Downloaded")
 		}
 		defer fileBody.Body.Close()
 	}
-	//	defer fileOut.Close()
 }
 
 func copyFile(srcFile, dstPath, dstFile string) bool {
 
 	err := os.MkdirAll(dstPath, os.ModeDir)
 	if err != nil {
-		fmt.Println("Cant create path: %v", dstPath)
+		fmt.Printf("Cant create path: %v\n", dstPath)
 	}
 
 	src, err := os.Open(srcFile)
 	if err != nil {
-		fmt.Println("Source File Error: %v", err)
+		fmt.Printf("Source File Error: %v\n", err)
 		defer src.Close()
 		return false
 	}
 
 	dst, err := os.Create(combinePath(dstPath, dstFile))
 	if err != nil {
-		fmt.Printf("Destination File Error: %v", err)
+		fmt.Printf("Destination File Error: %v\n", err)
 		defer dst.Close()
 		return false
 	}
 
-	fmt.Println(srcFile)
-	fmt.Println(combinePath(dstPath, dstFile))
-	_, err = io.Copy(src, dst)
+	_, err = io.Copy(dst, src)
 	if err != nil {
-		fmt.Println("File Copy Error: %v", err)
+		fmt.Printf("File Copy Error: %v\n", err)
 		return false
 	}
 
 	err = dst.Close()
 	if err != nil {
-		fmt.Println("Error: %v", err)
+		fmt.Printf("Error: %v\n", err)
 		return false
 	}
 	return true

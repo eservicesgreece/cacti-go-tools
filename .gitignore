@@ -27,3 +27,4 @@ builds
 CHANGELOG
 build.*
 .vscode
+/*.bat

@@ -78,10 +78,11 @@ func main() {
 		fmt.Printf("nginx snmp tests " + *nginxtesthost)
 		break
 	case "install":
-		if *installconf != "" {
+		switch *installtype {
+		case "config":
 			downloadConfig("/etc/cacti-go-tools/", *installconfurl)
-		}
-		if *installbin != "" {
+			break
+		case "binary":
 			copyFile("cacti-go-tools", "/usr/bin/", "cacti-go-tools")
 		}
 	default:

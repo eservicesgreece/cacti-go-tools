@@ -31,7 +31,7 @@ func setupConfig() {
 	//Fetch Configuration
 	err := viper.ReadInConfig() // Find and read the config file
 	if err != nil {
-		if *installconf != "" {
+		if *installtype != "" {
 			downloadConfig("/etc/cacti-go-tools/", *installconfurl)
 			os.Exit(0)
 		} else {
