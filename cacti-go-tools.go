@@ -1,3 +1,4 @@
+//go:generate goversioninfo
 package main
 
 import (
@@ -42,7 +43,7 @@ func main() {
 	case "engine":
 		switch *enginetype {
 		case "nginx":
-			fmt.Printf(nginxStatus(fetchURL(makeURL(viper.GetString("phpfpm.uri"), viper.GetString("phpfpm.path")))))
+			fmt.Printf(nginxStatus(fetchURL(makeURL(viper.GetString("nginx.uri"), viper.GetString("nginx.path")))))
 			break
 		case "phpfpm":
 			fmt.Printf(phpfpmStatus(fetchURL(makeURL(viper.GetString("phpfpm.uri"), viper.GetString("phpfpm.path")))))
